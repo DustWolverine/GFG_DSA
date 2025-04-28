@@ -1,5 +1,5 @@
 #pragma GCC optimize("Ofast")
- #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+// #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
 #pragma GCC optimize("unroll-loops")
 #include <bits/stdc++.h>
 
@@ -23,6 +23,20 @@ double eps = 1e-12;
 #define all(x) (x).begin(), (x).end()
 #define sz(x) ((ll)(x).size())
 
+int frequentElement(vector<int>&v){
+  unordered_map<int,int> mpp;
+  int maxCount=INT_MIN;
+  int freqElement=-1;
+  for(auto it:v){
+      mpp[it]++;
+      if(mpp[it]>maxCount){
+        maxCount=mpp[it];
+        freqElement=it;
+      }
+  }
+ 
+  return freqElement;
+}
 
 int main()
 {
@@ -32,35 +46,14 @@ int main()
  freopen("input.txt", "r", stdin);
  freopen("output.txt", "w", stdout);
 #endif
-
-int n,k;cin>>n>>k; 
+int n; cin>>n; 
 vector<int> v;
 for(int i=0;i<n;i++){
-    int x; cin>>x;
+    int x;cin>>x;
     v.push_back(x);
 }
-bool flag=true;
-unordered_map<int,int> mpp;
-for(int i=0;i<n-k;i++){
-    for(int j=i;j<=i+k;j++){
-        mpp[v[j]]++;
-    }
-   
-    for(auto it:mpp){
-        if(it.second>1){
-           flag=false;
-           break;
-        }
-    }
-
-    mpp.clear();
-    if(!flag){
-        break;
-    }
-
-}
-//? time complexity is O((n-k)*k) and space complexity is O(k)
-(flag)?cout<<"Duplicate Dont Exist":cout<<"Duplicate  Exist";
+//? time complexity is O(n) and space complexity is O(n)
+cout<<frequentElement(v)<<endl;
 
  return 0;
 }

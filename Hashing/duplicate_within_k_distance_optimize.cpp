@@ -1,5 +1,5 @@
 #pragma GCC optimize("Ofast")
- #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+// #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
 #pragma GCC optimize("unroll-loops")
 #include <bits/stdc++.h>
 
@@ -24,6 +24,21 @@ double eps = 1e-12;
 #define sz(x) ((ll)(x).size())
 
 
+bool checkDuplicatewithinK(vector<int>&arr,int k){
+    
+    set<int> st;
+    for(int i=0;i<arr.size();i++){
+         if(st.find(arr[i])!=st.end()){
+            return false;
+         }
+         st.insert(arr[i]);
+         if(i>=k){
+            st.erase(arr[i-k]);
+         }
+    }
+    return true;
+}
+
 int main()
 {
  fast_cin();
@@ -32,35 +47,14 @@ int main()
  freopen("input.txt", "r", stdin);
  freopen("output.txt", "w", stdout);
 #endif
-
-int n,k;cin>>n>>k; 
+int n,k; cin>>n>>k; 
 vector<int> v;
 for(int i=0;i<n;i++){
     int x; cin>>x;
     v.push_back(x);
 }
-bool flag=true;
-unordered_map<int,int> mpp;
-for(int i=0;i<n-k;i++){
-    for(int j=i;j<=i+k;j++){
-        mpp[v[j]]++;
-    }
-   
-    for(auto it:mpp){
-        if(it.second>1){
-           flag=false;
-           break;
-        }
-    }
-
-    mpp.clear();
-    if(!flag){
-        break;
-    }
-
-}
-//? time complexity is O((n-k)*k) and space complexity is O(k)
-(flag)?cout<<"Duplicate Dont Exist":cout<<"Duplicate  Exist";
+//? time complexity is O(nlogk) and space complexity is O(k)
+(checkDuplicatewithinK(v,k))?cout<<"Duplicate Dont Exist":cout<<"Duplicate Exist";
 
  return 0;
 }
